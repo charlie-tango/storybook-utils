@@ -3,7 +3,7 @@ import * as React from "react";
 import chalk from "chalk";
 import globby from "globby";
 import path from "path";
-import { Story } from "@storybook/react";
+import type { Story } from "@storybook/react";
 import type { Meta, StoryContext } from "@storybook/react";
 import { combineParameters, defaultDecorateStory } from "@storybook/client-api";
 import { ArgTypes, BaseDecorators, Parameters } from "@storybook/addons";
@@ -15,20 +15,20 @@ import {
 import { render, RenderResult, waitFor } from "@testing-library/react";
 
 interface StoryCallbackDetails {
+  /** A pretty version of the story name, with spaces instead of camelCasing */
   storyName: string;
+  /** The file path for the stories */
   pathName: string;
+  /**All the meta data for the storybook. This is what is exported on the `default` export in a story */
   meta: Meta;
 }
 
-export interface StorybookGlobalConfig {
+interface StorybookGlobalConfig {
   /**
    * Storybook style decorators to wrap around each story.
    * [https://storybook.js.org/docs/react/writing-stories/decorators]()
    * */
   decorators?: BaseDecorators<React.ReactElement>;
-  /**
-   *Parameters are a set of static, named metadata about a story, typically used to control the behavior of Storybook features and addons.
-   */
   parameters?: Parameters;
   argTypes?: ArgTypes;
   [key: string]: any;
@@ -49,10 +49,6 @@ export interface TestStoriesOptions {
     result: RenderResult,
     details: StoryCallbackDetails
   ) => Promise<void> | void;
-  /**
-   * The global config from the applications Storybook.
-   * [https://storybook.js.org/docs/react/configure/overview#configure-story-rendering]()
-   **/
   storybookConfig?: StorybookGlobalConfig;
 }
 
@@ -131,7 +127,6 @@ function prepareStories(
       name,
       // Create a render method we can call later, when we want to do the actual rendering.
       () => {
-        // @ts-ignore
         const story = composeStory(stories[key], meta, options.storybookConfig);
 
         // Render using our custom @testing-library/react render method

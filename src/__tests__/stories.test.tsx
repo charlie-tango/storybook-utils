@@ -2,10 +2,8 @@ import React from "react";
 import { testStories } from "../index";
 import { render, RenderOptions } from "@testing-library/react";
 
-describe("basic glob", () => {
+describe("globs", () => {
   testStories("./src/**/*.{story,stories}.tsx");
-});
-describe("array glob", () => {
   testStories(["./src/**/*.{story,stories}.tsx"]);
 });
 
@@ -14,6 +12,9 @@ describe("callback", () => {
     callback: async (result, details) => {
       if (details.storyName === "Example 1") {
         result.getByText("Example 1");
+      }
+      if (details.storyName === "Lazy Mount") {
+        result.getByText("mounted");
       }
       if (details.storyName === "Args Example") {
         result.getByText("ArgsExample");
