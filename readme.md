@@ -2,7 +2,21 @@
 
 Automatically test all Storybook stories in your project.
 
-## Requirements
+## Installation
+
+Install using [Yarn](https://yarnpkg.com):
+
+```sh
+yarn add @charlietango/storybook-utils --dev
+```
+
+or NPM:
+
+```sh
+npm install @charlietango/storybook-utils --save-dev
+```
+
+### Requirements
 
 You will need to have the following peer dependencies installed:
 
