@@ -21,6 +21,10 @@ npm-debug.log
 .babelrc
 .editorconfig
 .storybook
+.prettierignore
+babel.config.js
+jest.config.js
+tsconfig.json
 yarn.lock
 
 # Project files
@@ -29,4 +33,6 @@ stories
 tests
 example
 jest-setup.js
+src
 __tests__
+.github
