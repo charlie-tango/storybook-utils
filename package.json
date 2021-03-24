@@ -1,6 +1,6 @@
 {
   "name": "@charlietango/storybook-utils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -8,6 +8,7 @@
   "scripts": {
     "build": "microbundle build --target node --format cjs,es",
     "dev": "microbundle watch",
+    "prepublish": "yarn build",
     "test": "jest"
   },
   "license": "MIT",
