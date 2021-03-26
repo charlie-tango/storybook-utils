@@ -53,10 +53,16 @@ This method takes the base from [paths.macro](https://github.com/storybookjs/pat
 This is useful to create a `title` for your stories, that reflect their current location.
 
 ```tsx
-import { createStoryPath } from "../../utils/storybook-utils";
+import { createStoryPath } from "@charlietango/storybook-utils";
 import base from "paths.macro";
 
 export default {
   title: createStoryPath(base),
 } as Meta;
 ```
+
+**Examples**
+
+* `src/components/Header/Header.story.tsx` 🡆 `components/Header`
+* `components/Header/Header.story.tsx` 🡆 `components/Header`
+* `src/components/Header/Navigation/Navigation.story.tsx` 🡆 `components/Header/Navigation`
