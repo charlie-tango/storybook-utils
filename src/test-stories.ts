@@ -3,16 +3,15 @@ import * as React from "react";
 import chalk from "chalk";
 import globby from "globby";
 import path from "path";
-import type { Story } from "@storybook/react";
-import type { Meta, StoryContext } from "@storybook/react";
-import { combineParameters, defaultDecorateStory } from "@storybook/client-api";
-import { ArgTypes, BaseDecorators, Parameters } from "@storybook/addons";
+import type { Meta } from "@storybook/react";
 import {
   IncludeExcludeOptions,
   isExportStory,
   storyNameFromExport,
 } from "@storybook/csf";
 import { render, RenderResult, waitFor } from "@testing-library/react";
+import { composeStory } from "@storybook/testing-react";
+import { GlobalConfig } from "@storybook/testing-react/src/types";
 
 interface StoryCallbackDetails {
   /** A pretty version of the story name, with spaces instead of camelCasing */
@@ -21,17 +20,6 @@ interface StoryCallbackDetails {
   pathName: string;
   /**All the meta data for the storybook. This is what is exported on the `default` export in a story */
   meta: Meta;
-}
-
-interface StorybookGlobalConfig {
-  /**
-   * Storybook style decorators to wrap around each story.
-   * [https://storybook.js.org/docs/react/writing-stories/decorators]()
-   * */
-  decorators?: BaseDecorators<React.ReactElement>;
-  parameters?: Parameters;
-  argTypes?: ArgTypes;
-  [key: string]: any;
 }
 
 export interface TestStoriesOptions {
@@ -49,7 +37,7 @@ export interface TestStoriesOptions {
     result: RenderResult,
     details: StoryCallbackDetails
   ) => Promise<void> | void;
-  storybookConfig?: StorybookGlobalConfig;
+  storybookConfig?: GlobalConfig;
 }
 
 export function testStories(
@@ -134,49 +122,4 @@ function prepareStories(
       },
     ] as [string, () => RenderResult];
   });
-}
-
-export function composeStory<GenericArgs>(
-  story: Story<GenericArgs>,
-  meta: Meta,
-  config: StorybookGlobalConfig = {}
-) {
-  const finalStoryFn = (context: StoryContext) => {
-    const { passArgsFirst = true } = context.parameters;
-    if (!passArgsFirst) {
-      throw new Error(
-        "composeStory does not support legacy style stories (with passArgsFirst = false)."
-      );
-    }
-    return story(context.args as GenericArgs, context);
-  };
-
-  const combinedDecorators = [
-    ...(story.decorators || []),
-    ...(meta?.decorators || []),
-    ...(config.decorators || []),
-  ];
-
-  const decorated = defaultDecorateStory(
-    finalStoryFn as any,
-    combinedDecorators as any
-  );
-
-  return (() =>
-    decorated({
-      id: "",
-      kind: "",
-      name: "",
-      argTypes: config.argTypes || {},
-      globals: config.globalTypes,
-      parameters: combineParameters(
-        config.parameters || {},
-        meta.parameters || {},
-        story.parameters || {}
-      ),
-      args: {
-        ...meta.args,
-        ...story.args,
-      },
-    })) as Story<Partial<GenericArgs>>;
 }
