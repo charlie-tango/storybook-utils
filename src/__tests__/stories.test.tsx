@@ -30,7 +30,7 @@ describe("decorators", () => {
   testStories("./src/**/*.{story,stories}.tsx", {
     storybookConfig: {
       decorators: [
-        (fn) => (
+        (fn: any) => (
           <div>
             <h1>Decorator</h1>
             {fn()}
@@ -38,7 +38,7 @@ describe("decorators", () => {
         ),
       ],
     },
-    callback: (result, details) => {
+    callback: (result) => {
       result.getByText("Decorator");
     },
   });
@@ -61,7 +61,7 @@ describe("custom-render", () => {
 
   testStories("./src/**/*.{story,stories}.tsx", {
     customRender,
-    callback: (result, details) => {
+    callback: (result) => {
       result.getByText("Render");
     },
   });
