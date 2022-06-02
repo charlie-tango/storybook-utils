@@ -49,6 +49,8 @@ In addition to the glob, `testStories` also accepts an options object.
 
 ### `createStoryPath`
 
+> ⚠️ **Deprecated** - You should use the built in automatic Storybook title over this. 
+
 This method takes the base from [paths.macro](https://github.com/storybookjs/paths.macro) and, converts it to usable Storybook path.
 This is useful to create a `title` for your stories, that reflect their current location.
 
